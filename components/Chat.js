@@ -2,15 +2,11 @@ import { StyleSheet, View, Text } from 'react-native';
 
 const Chat = ({ route, navigation }) => {
     const color = route.params.color;
-    // const name = route.params.name;
-
-    // useEffect(() => {
-    //     navigation.setOptions({ title: name });
-    // }, []);
+    const username = route.params.name;
 
     return (
         <View style={[styles.container, { backgroundColor: color }]}>
-            <Text>Chat component</Text>
+            <Text>Welcome {username} ! </Text>
         </View>
     );
 };

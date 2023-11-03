@@ -41,7 +41,6 @@ const Start = ({ navigation }) => {
                 </View>
                 <Button
                     title='Start Chatting'
-                    // onPress={() => navigation.navigate('Chat')}
                     onPress={() =>
                         navigation.navigate('Chat', {
                             name: username,
