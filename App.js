@@ -1,6 +1,6 @@
 // import the screens
 import Start from './components/Start.js';
-// import Chat from './components/Chat.js';
+import Chat from './components/Chat.js';
 
 // import react Navigation
 import { NavigationContainer } from '@react-navigation/native';
@@ -14,8 +14,7 @@ const App = () => {
         <NavigationContainer>
             <Stack.Navigator initialRouteName='Start'>
                 <Stack.Screen name='Start' component={Start} />
-                {/* <Start /> */}
-                {/* <Stack.Screen name='Chat' component={Chat} /> */}
+                <Stack.Screen name='Chat' component={Chat} />
             </Stack.Navigator>
         </NavigationContainer>
     );

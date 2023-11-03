@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Chat from './Chat';
 import {
     StyleSheet,
     View,
@@ -9,8 +10,8 @@ import {
 } from 'react-native';
 
 const Start = ({ navigation }) => {
-    const [name, setName] = useState('');
-
+    const [username, setUsername] = useState('');
+    const [background, setBackground] = useState('#fff');
     const colors = ['#FF5733', '#4287f5', '#75C7A7', '#FAC032'];
 
     return (
@@ -19,20 +20,34 @@ const Start = ({ navigation }) => {
             <View style={styles.startModal}>
                 <TextInput
                     style={styles.textInput}
-                    value={name}
-                    onChangeText={setName}
+                    value={username}
+                    onChangeText={(val) => setUsername(val)}
                     placeholder='Your Name'
                 />
                 <Text> Choose Background Color:</Text>
                 <View style={styles.buttonsArea}>
-                    <TouchableOpacity style={styles.chooseColorButton} />
-                    <TouchableOpacity style={styles.chooseColorButton} />
-                    <TouchableOpacity style={styles.chooseColorButton} />
-                    <TouchableOpacity style={styles.chooseColorButton} />
+                    {colors.map((color, index) => (
+                        <TouchableOpacity
+                            key={index}
+                            style={[
+                                styles.chooseColorButton,
+                                { backgroundColor: color },
+                                styles.selected,
+                                background === color && styles.selected,
+                            ]}
+                            onPress={() => setBackground(color)}
+                        />
+                    ))}
                 </View>
                 <Button
                     title='Start Chatting'
-                    onPress={() => navigation.navigate('Chat')}
+                    // onPress={() => navigation.navigate('Chat')}
+                    onPress={() =>
+                        navigation.navigate('Chat', {
+                            name: username,
+                            color: background,
+                        })
+                    }
                 />
             </View>
         </View>
@@ -76,7 +91,6 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         borderRadius: 50 / 2,
-        backgroundColor: 'blue',
     },
 });
 
