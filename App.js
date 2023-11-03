@@ -1,6 +1,6 @@
 // import the screens
-import Screen1 from './components/Start.js';
-import Screen2 from './components/Chat.js';
+import Start from './components/Start.js';
+// import Chat from './components/Chat.js';
 
 // import react Navigation
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,9 +12,10 @@ const Stack = createNativeStackNavigator();
 const App = () => {
     return (
         <NavigationContainer>
-            <Stack.Navigator initialRouteName='Screen1'>
-                <Stack.Screen name='Screen1' component={Screen1} />
-                <Stack.Screen name='Screen2' component={Screen2} />
+            <Stack.Navigator initialRouteName='Start'>
+                <Stack.Screen name='Start' component={Start} />
+                {/* <Start /> */}
+                {/* <Stack.Screen name='Chat' component={Chat} /> */}
             </Stack.Navigator>
         </NavigationContainer>
     );
