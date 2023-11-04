@@ -51,8 +51,8 @@ const Chat = ({ route, navigation }) => {
     }, []);
 
     return (
-        // <View style={[styles.container, { backgroundColor: color }]}>
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: color }]}>
+            {/* <View style={styles.container}> */}
             <GiftedChat
                 messages={messages}
                 renderBubble={renderBubble}
@@ -61,9 +61,16 @@ const Chat = ({ route, navigation }) => {
                     _id: 1,
                     name,
                 }}
+                accessible={true}
+                accessibilityLabel='Chat text box'
+                accessibilityHint='Displays messages.'
+                accessibilityRole='text'
             />
             {Platform.OS === 'android' ? (
                 <KeyboardAvoidingView behavior='height' />
+            ) : null}
+            {Platform.OS === 'ios' ? (
+                <KeyboardAvoidingView behavior='padding' />
             ) : null}
         </View>
     );

@@ -23,9 +23,18 @@ const Start = ({ navigation }) => {
                     value={username}
                     onChangeText={(val) => setUsername(val)}
                     placeholder='Your Name'
+                    accessible={true}
+                    accessibilityLabel='Name input field'
+                    accessibilityHint='Enter your name here'
+                    accessibilityRole='text'
                 />
                 <Text> Choose Background Color:</Text>
-                <View style={styles.buttonsArea}>
+                <View
+                    style={styles.buttonsArea}
+                    accessible={true}
+                    accessibilityLabel='Background color selection'
+                    accessibilityRole='menu'
+                >
                     {colors.map((color, index) => (
                         <TouchableOpacity
                             key={index}
@@ -36,6 +45,9 @@ const Start = ({ navigation }) => {
                                 background === color && styles.selected,
                             ]}
                             onPress={() => setBackground(color)}
+                            accessible={true}
+                            accessibilityLabel='Different colors to select'
+                            accessibilityRole='menuitem'
                         />
                     ))}
                 </View>
@@ -47,6 +59,10 @@ const Start = ({ navigation }) => {
                             color: background,
                         })
                     }
+                    accessible={true}
+                    accessibilityLabel='Start chatting Button'
+                    accessibilityHint='Enters chat conversation'
+                    accessibilityRole='button'
                 />
             </View>
         </View>
