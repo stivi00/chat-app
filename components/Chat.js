@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import { StyleSheet, View, Text, KeyboardAvoidingView } from 'react-native';
 
-const Chat = ({ route, navigation }) => {
+const Chat = ({ route, navigation, db }) => {
     const color = route.params.color;
     const name = route.params.name;
     const [messages, setMessages] = useState([]);
