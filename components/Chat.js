@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import { StyleSheet, View, Text, KeyboardAvoidingView } from 'react-native';
+import { collection, getDocs, addDoc, onSnapshot } from 'firebase/firestore';
 
 const Chat = ({ route, navigation, db }) => {
     const color = route.params.color;
@@ -29,25 +30,9 @@ const Chat = ({ route, navigation, db }) => {
         );
     };
 
+    // Set the navigation title to the user's name.
     useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: 'Hello developer',
-                createdAt: new Date(),
-                user: {
-                    _id: 2,
-                    name: 'React Native',
-                    avatar: 'https://placeimg.com/140/140/any',
-                },
-            },
-            {
-                _id: 2,
-                text: 'This is a system message',
-                createdAt: new Date(),
-                system: true,
-            },
-        ]);
+        navigation.setOptions({ title: name });
     }, []);
 
     return (
