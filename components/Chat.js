@@ -1,11 +1,19 @@
 import { useState, useEffect } from 'react';
 import { GiftedChat, Bubble } from 'react-native-gifted-chat';
 import { StyleSheet, View, Text, KeyboardAvoidingView } from 'react-native';
-import { collection, getDocs, addDoc, onSnapshot } from 'firebase/firestore';
+import {
+    collection,
+    getDocs,
+    addDoc,
+    onSnapshot,
+    query,
+    orderBy,
+} from 'firebase/firestore';
 
 const Chat = ({ route, navigation, db }) => {
-    const color = route.params.color;
-    const name = route.params.name;
+    // Extracting parameters from navigation route.
+    const { name, color, userID } = route.params;
+
     const [messages, setMessages] = useState([]);
 
     const renderBubble = (props) => {
@@ -60,7 +68,6 @@ const Chat = ({ route, navigation, db }) => {
                 renderBubble={renderBubble}
                 onSend={(messages) => onSend(messages)}
                 user={{
-                    _id: 1,
                     name,
                 }}
                 accessible={true}
