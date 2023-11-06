@@ -8,12 +8,6 @@ const Chat = ({ route, navigation, db }) => {
     const name = route.params.name;
     const [messages, setMessages] = useState([]);
 
-    const onSend = (newMessages) => {
-        setMessages((previousMessages) =>
-            GiftedChat.append(previousMessages, newMessages)
-        );
-    };
-
     const renderBubble = (props) => {
         return (
             <Bubble
@@ -30,10 +24,33 @@ const Chat = ({ route, navigation, db }) => {
         );
     };
 
-    // Set the navigation title to the user's name.
     useEffect(() => {
+        // Set the navigation title to the user's name.
         navigation.setOptions({ title: name });
+        const q = query(
+            collection(db, 'messages'),
+            orderBy('createdAt', 'desc')
+        );
+        const unsubMessages = onSnapshot(q, (docs) => {
+            let newMessages = [];
+            docs.forEach((doc) => {
+                newMessages.push({
+                    id: doc.id,
+                    ...doc.data(),
+                    createdAt: new Date(doc.data().createdAt.toMillis()),
+                });
+            });
+            setMessages(newMessages);
+        });
+        return () => {
+            if (unsubMessages) unsubMessages();
+        };
     }, []);
+
+    // Handler to send new messages to Firestore.
+    const onSend = (newMessages) => {
+        addDoc(collection(db, 'messages'), newMessages[0]);
+    };
 
     return (
         <View style={[styles.container, { backgroundColor: color }]}>
