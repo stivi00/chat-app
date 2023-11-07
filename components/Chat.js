@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { GiftedChat, Bubble } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat';
 import { StyleSheet, View, Text, KeyboardAvoidingView } from 'react-native';
 import {
     collection,
@@ -94,6 +94,12 @@ const Chat = ({ route, navigation, db, isConnected }) => {
         addDoc(collection(db, 'messages'), newMessages[0]);
     };
 
+    const renderInputToolbar = (props) => {
+        // rendering InputToolbar function
+        if (isConnected) return <InputToolbar {...props} />;
+        else return null;
+    };
+
     return (
         <View style={[styles.container, { backgroundColor: color }]}>
             {/* <View style={styles.container}> */}
@@ -104,6 +110,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
                 user={{
                     name,
                 }}
+                renderInputToolbar={renderInputToolbar}
                 accessible={true}
                 accessibilityLabel='Chat text box'
                 accessibilityHint='Displays messages.'
