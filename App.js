@@ -2,9 +2,10 @@
 import Start from './components/Start.js';
 import Chat from './components/Chat.js';
 
-// import react Navigation
+import { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Alert } from 'react-native';
 import { initializeApp } from 'firebase/app';
 import {
     getFirestore,

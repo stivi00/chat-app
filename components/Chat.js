@@ -37,14 +37,16 @@ const Chat = ({ route, navigation, db, isConnected }) => {
         );
     };
 
+    let unsubMessages;
+
     useEffect(() => {
         navigation.setOptions({
             title: name,
             headerStyle: {
-                backgroundColor: color, // set the background color of the header
+                backgroundColor: color,
             },
             headerTitleStyle: {
-                color: color === '' ? '#000' : '#fff', // if color is empty, use black, else use white
+                color: color === '' ? '#000' : '#fff',
             },
         });
 
@@ -120,7 +122,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
                 <KeyboardAvoidingView behavior='height' />
             ) : null}
             {Platform.OS === 'ios' ? (
-                <KeyboardAvoidingView behavior='padding' />
+                <KeyboardAvoidingView behavior='height' />
             ) : null}
         </View>
     );
