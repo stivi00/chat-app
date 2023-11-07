@@ -27,9 +27,10 @@ const App = () => {
         appId: '1:740947276148:web:1831a743a7e632475d3c21',
     };
 
+    const connectionStatus = useNetInfo();
+
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-
     // Initialize Cloud Firestore and get a reference to the service
     const db = getFirestore(app);
 
@@ -41,8 +42,6 @@ const App = () => {
             enableNetwork(db);
         }
     }, [connectionStatus.isConnected]);
-
-    const connectionStatus = useNetInfo();
 
     return (
         <NavigationContainer>

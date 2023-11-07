@@ -11,11 +11,15 @@ import {
 } from 'firebase/firestore';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Chat = ({ route, navigation, db }) => {
+const Chat = ({ route, navigation, db, isConnected }) => {
     // Extracting parameters from navigation route.
     const { name, color, userID } = route.params;
-
     const [messages, setMessages] = useState([]);
+
+    const loadCachedMessages = async () => {
+        const cachedMessages = (await AsyncStorage.getItem('messages')) || '[]';
+        setMessages(JSON.parse(cachedMessages));
+    };
 
     const renderBubble = (props) => {
         return (
@@ -34,27 +38,56 @@ const Chat = ({ route, navigation, db }) => {
     };
 
     useEffect(() => {
-        // Set the navigation title to the user's name.
-        navigation.setOptions({ title: name });
-        const q = query(
-            collection(db, 'messages'),
-            orderBy('createdAt', 'desc')
-        );
-        const unsubMessages = onSnapshot(q, (docs) => {
-            let newMessages = [];
-            docs.forEach((doc) => {
-                newMessages.push({
-                    id: doc.id,
-                    ...doc.data(),
-                    createdAt: new Date(doc.data().createdAt.toMillis()),
-                });
-            });
-            setMessages(newMessages);
+        navigation.setOptions({
+            title: name,
+            headerStyle: {
+                backgroundColor: color, // set the background color of the header
+            },
+            headerTitleStyle: {
+                color: color === '' ? '#000' : '#fff', // if color is empty, use black, else use white
+            },
         });
-        return () => {
+
+        if (isConnected === true) {
             if (unsubMessages) unsubMessages();
+            unsubMessages = null;
+
+            const q = query(
+                collection(db, 'messages'),
+                orderBy('createdAt', 'desc')
+            );
+            unsubMessages = onSnapshot(q, (documentsSnapshot) => {
+                let newMessages = [];
+                documentsSnapshot.forEach((doc) => {
+                    newMessages.push({
+                        id: doc.id,
+                        ...doc.data(),
+                        createdAt: new Date(doc.data().createdAt.toMillis()), // convert createdAt to Date object })
+                    });
+                });
+                cachedMessages(newMessages);
+                setMessages(newMessages);
+            });
+        } else loadCachedMessages();
+
+        // Clean up function
+        return () => {
+            if (unsubMessages) {
+                unsubMessages();
+            }
         };
-    }, []);
+    }, [isConnected]);
+
+    const cachedMessages = async (messagesToCache) => {
+        try {
+            await AsyncStorage.setItem(
+                'messages',
+                JSON.stringify(messagesToCache)
+            );
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
 
     // Handler to send new messages to Firestore.
     const onSend = (newMessages) => {
