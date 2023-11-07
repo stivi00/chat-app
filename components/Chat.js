@@ -9,6 +9,7 @@ import {
     query,
     orderBy,
 } from 'firebase/firestore';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Chat = ({ route, navigation, db }) => {
     // Extracting parameters from navigation route.
