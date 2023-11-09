@@ -5,7 +5,6 @@ import Chat from './components/Chat.js';
 import { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import * as ImagePicker from 'expo-image-picker';
 import { Alert } from 'react-native';
 import { initializeApp } from 'firebase/app';
 import {

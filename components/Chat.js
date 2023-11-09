@@ -1,3 +1,5 @@
+import CustomActions from './CustomActions';
+
 import { useState, useEffect } from 'react';
 import { GiftedChat, Bubble, InputToolbar } from 'react-native-gifted-chat';
 import { StyleSheet, View, Text, KeyboardAvoidingView } from 'react-native';
@@ -100,6 +102,10 @@ const Chat = ({ route, navigation, db, isConnected }) => {
         // rendering InputToolbar function
         if (isConnected) return <InputToolbar {...props} />;
         else return null;
+    };
+
+    const renderCustomActions = (props) => {
+        return <CustomActions {...props} />;
     };
 
     return (
