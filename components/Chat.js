@@ -119,6 +119,7 @@ const Chat = ({ route, navigation, db, isConnected }) => {
                     name,
                 }}
                 renderInputToolbar={renderInputToolbar}
+                renderActions={renderCustomActions}
                 accessible={true}
                 accessibilityLabel='Chat text box'
                 accessibilityHint='Displays messages.'
