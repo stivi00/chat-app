@@ -60,9 +60,10 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage }) => {
             let result = await ImagePicker.launchImageLibraryAsync();
             if (!result.canceled) {
                 const imageURI = result.assets[0].uri;
+                const uniqueRefString = generateReference(imageURI);
                 const response = await fetch(imageURI);
                 const blob = await response.blob();
-                const newUploadRef = ref(storage, 'image123');
+                const newUploadRef = ref(storage, uniqueRefString);
                 uploadBytes(newUploadRef, blob).then(async (snapshot) => {
                     console.log('File has been uploaded successfully');
                 });
