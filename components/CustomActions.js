@@ -7,6 +7,12 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage }) => {
     const actionSheet = useActionSheet();
 
+    const generateReference = (uri) => {
+        const timeStamp = new Date().getTime();
+        const imageName = uri.split('/')[uri.split('/').length - 1];
+        return `${userID}-${timeStamp}-${imageName}`;
+    };
+
     const onActionPress = () => {
         const options = [
             'Choose From Library',
@@ -52,25 +58,37 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage }) => {
         } else Alert.alert("Permissions haven't been granted.");
     };
 
-    //pick the image from the device
+    const uploadAndSendImage = async (imageURI) => {
+        const uniqueRefString = generateReference(imageURI);
+        const newUploadRef = ref(storage, uniqueRefString);
+        const response = await fetch(imageURI);
+        const blob = await response.blob();
+        uploadBytes(newUploadRef, blob).then(async (snapshot) => {
+            const imageURL = await getDownloadURL(snapshot.ref);
+            onSend({ image: imageURL });
+        });
+    };
+
     const pickImage = async () => {
         let permissions =
             await ImagePicker.requestMediaLibraryPermissionsAsync();
         if (permissions?.granted) {
             let result = await ImagePicker.launchImageLibraryAsync();
-            if (!result.canceled) {
-                const imageURI = result.assets[0].uri;
-                const uniqueRefString = generateReference(imageURI);
-                const response = await fetch(imageURI);
-                const blob = await response.blob();
-                const newUploadRef = ref(storage, uniqueRefString);
-                uploadBytes(newUploadRef, blob).then(async (snapshot) => {
-                    console.log('File has been uploaded successfully');
-                });
-            } else Alert.alert("Permissions haven't been granted.");
+            if (!result.canceled)
+                await uploadAndSendImage(result.assets[0].uri);
+            else Alert.alert("Permissions haven't been granted.");
         }
     };
 
+    const takePhoto = async () => {
+        let permissions = await ImagePicker.requestCameraPermissionsAsync();
+        if (permissions?.granted) {
+            let result = await ImagePicker.launchCameraAsync();
+            if (!result.canceled)
+                await uploadAndSendImage(result.assets[0].uri);
+            else Alert.alert("Permissions haven't been granted.");
+        }
+    };
     return (
         <TouchableOpacity style={styles.container} onPress={onActionPress}>
             <View style={[styles.wrapper, wrapperStyle]}>
