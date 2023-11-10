@@ -2,8 +2,9 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 import { useActionSheet } from '@expo/react-native-action-sheet';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
-const CustomActions = ({ wrapperStyle, iconTextStyle, onSend }) => {
+const CustomActions = ({ wrapperStyle, iconTextStyle, onSend, storage }) => {
     const actionSheet = useActionSheet();
 
     const onActionPress = () => {
@@ -35,6 +36,7 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend }) => {
         );
     };
 
+    //get the location from the device
     const getLocation = async () => {
         let permissions = await Location.requestForegroundPermissionsAsync();
         if (permissions?.granted) {
@@ -48,6 +50,24 @@ const CustomActions = ({ wrapperStyle, iconTextStyle, onSend }) => {
                 });
             } else Alert.alert('Error occurred while fetching location');
         } else Alert.alert("Permissions haven't been granted.");
+    };
+
+    //pick the image from the device
+    const pickImage = async () => {
+        let permissions =
+            await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (permissions?.granted) {
+            let result = await ImagePicker.launchImageLibraryAsync();
+            if (!result.canceled) {
+                const imageURI = result.assets[0].uri;
+                const response = await fetch(imageURI);
+                const blob = await response.blob();
+                const newUploadRef = ref(storage, 'image123');
+                uploadBytes(newUploadRef, blob).then(async (snapshot) => {
+                    console.log('File has been uploaded successfully');
+                });
+            } else Alert.alert("Permissions haven't been granted.");
+        }
     };
 
     return (
