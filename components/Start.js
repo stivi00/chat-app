@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import Chat from './Chat';
 import {
     StyleSheet,
     View,
@@ -12,13 +11,15 @@ import {
 const Start = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [background, setBackground] = useState('#fff');
-    const colors = ['#FF5733', '#4287f5', '#75C7A7', '#FAC032'];
+    const colors = ['#FFCC70', '#8ECDDD', '#22668D', '#6A9C89'];
 
     return (
         <View style={styles.container}>
             <Text style={styles.title}>ChatterBox </Text>
+            <View style={styles.gap}></View>
             <View style={styles.startModal}>
                 <TextInput
+                    placeholderTextColor={'#213555'}
                     style={styles.textInput}
                     value={username}
                     onChangeText={(val) => setUsername(val)}
@@ -52,6 +53,7 @@ const Start = ({ navigation }) => {
                     ))}
                 </View>
                 <Button
+                    color='#219C90'
                     title='Start Chatting'
                     onPress={() =>
                         navigation.navigate('Chat', {
@@ -72,19 +74,25 @@ const Start = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'green',
+        backgroundColor: '#213555',
         justifyContent: 'center',
         alignItems: 'center',
     },
     title: {
-        fontSize: 28,
+        fontSize: 32,
         fontWeight: 'bold',
-        color: '#fff',
+        color: '#F5E8C7',
+    },
+
+    gap: {
+        height: 100,
     },
     startModal: {
         width: '90%',
-        backgroundColor: '#fff',
+        backgroundColor: '#4F709C',
         alignItems: 'center',
+        borderRadius: 8,
+        elevation: 5,
     },
     textInput: {
         width: '88%',
@@ -92,6 +100,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         marginTop: 15,
         marginBottom: 15,
+        backgroundColor: '#F5E8C7',
+        color: '#fff',
     },
     buttonsArea: {
         display: 'flex',
