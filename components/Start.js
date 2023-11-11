@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 8,
         elevation: 5,
+        padding: 20,
     },
     textInput: {
         width: '88%',
