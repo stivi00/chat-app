@@ -19,7 +19,7 @@ It's goal is to allow users to share and exchange messages, photos and other med
   - Send direct photo using camera
   - Share your location
 
-Getting started with ChatterBox
+# Getting started with ChatterBox
 
   - Clone this repository
   - Navigate to the project directory and run: `npm install`
